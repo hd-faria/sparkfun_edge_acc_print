@@ -11,8 +11,11 @@
 #include "am_mcu_apollo.h"
 #include "am_bsp.h"
 #include "am_util.h"
+//#include "am_util_delay.h"
 #include "tf_adc.h"
 #include "tf_accelerometer.h"
+
+#define TIME_DELAY_MILISECONDS 500
 
 static int  boardSetup(void);
 static void boardTeardown(void);
@@ -77,9 +80,12 @@ int main(void)
             am_util_stdio_printf("%04.2f ,%04.2f ,%04.2f \r\n",
                     acceleration_mg[0], acceleration_mg[1], acceleration_mg[2] );
 
+            am_util_delay_ms(TIME_DELAY_MILISECONDS);
+
 
         }
 
+        
         
     }
 
