@@ -47,6 +47,9 @@ int main(void)
 
     testADC();
     
+    am_util_stdio_printf("Interval between readings: ~%d", TIME_DELAY_MILISECONDS);
+    am_util_stdio_printf("ms\r\n\n");
+
     am_util_stdio_printf("AccX [mg], AccY [mg], AccZ [mg]\r\n");
 
     /*
