@@ -36,14 +36,15 @@ int main(void)
 
     am_util_stdio_printf("SparkFun Edge Board Test\n");
     am_util_stdio_printf("Compiled on %s, %s\n\n", __DATE__, __TIME__);
-    am_util_stdio_printf("SparkFun Tensorflow Debug Output (UART)\r\n");
-    am_bsp_uart_string_print("Hello, UART!\r\n");
+    //am_bsp_uart_string_print("Hello, UART!\r\n");
 
+    am_util_stdio_printf("Initializing accelerometer... \r\n");
     int accInitRes = initAccelerometer();
-    am_util_stdio_printf("Accelerometer init returned %8x\r\n", accInitRes);
+    am_util_stdio_printf("Accelerometer init returned %8x\r\n\n", accInitRes);
 
     testADC();
     
+    am_util_stdio_printf("AccX [mg], AccY [mg], AccZ [mg]\r\n");
 
     /*
     * Read samples in polling mode (no int)
@@ -73,23 +74,13 @@ int main(void)
             acceleration_mg[2] =
             lis2dh12_from_fs2_hr_to_mg(data_raw_acceleration.i16bit[2]);
             
-            am_util_stdio_printf("Acc [mg] %04.2f x, %04.2f y, %04.2f z, Temp [deg C] %04.2f, MIC0 [counts / 2^14] %d\r\n",
-                    acceleration_mg[0], acceleration_mg[1], acceleration_mg[2], temperature_degC, (audioSample) );
+            am_util_stdio_printf("%04.2f ,%04.2f ,%04.2f \r\n",
+                    acceleration_mg[0], acceleration_mg[1], acceleration_mg[2] );
 
-            // am_util_stdio_printf("%d\r\n",
-            //         (audioSample) );
 
         }
 
-        lis2dh12_temp_data_ready_get(&dev_ctx, &reg.byte);      
-        if (reg.byte)    
-        {
-            /* Read temperature data */
-            memset(data_raw_temperature.u8bit, 0x00, sizeof(int16_t));
-            lis2dh12_temperature_raw_get(&dev_ctx, data_raw_temperature.u8bit);
-            temperature_degC =
-            lis2dh12_from_lsb_hr_to_celsius(data_raw_temperature.i16bit);
-        }
+        
     }
 
     // Turn off leds

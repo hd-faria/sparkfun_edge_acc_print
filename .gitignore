@@ -259,4 +259,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# Arm toolchain?
+*./gcc/bin/example1_edge_test*
+
 # End of https://www.gitignore.io/api/c,c++,linux,macos,python,windows,visualstudiocode
