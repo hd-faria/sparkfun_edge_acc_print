@@ -45,7 +45,7 @@ CONFIG := bin
 SHELL:=/bin/bash
 
 #### Bootloader Configuration
-SERIAL_PORT ?= COM7# Or perhaps a Unix-like machine might put '/dev/cu.usbserial-1410' 
+SERIAL_PORT ?= COM8 # Or perhaps a Unix-like machine might put '/dev/cu.usbserial-1410' 
 ARTEMIS_LOADER_CMD =#for example: "C:\Users\you\~\artemis_uart_loader.exe"
 
 #### Setup ####

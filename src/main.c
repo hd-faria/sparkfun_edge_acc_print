@@ -16,15 +16,22 @@
 #include "tf_accelerometer.h"
 
 #define TIME_DELAY_MILISECONDS 500
+#define TIME_DELAY_COMM_SET_UP 25
 
 static int  boardSetup(void);
 static void boardTeardown(void);
 static int  testADC(void);
 
 axis3bit16_t data_raw_acceleration;
-axis1bit16_t data_raw_temperature;
 float acceleration_mg[3];
-float temperature_degC;
+
+//*****************************************************************************
+//
+//  GPIO pin 1.
+//
+//*****************************************************************************
+#define AM_BSP_GPIO_1                   1
+extern const am_hal_gpio_pincfg_t       g_AM_BSP_GPIO_1;
 
 //*****************************************************************************
 //
@@ -37,8 +44,8 @@ int main(void)
 
     am_util_stdio_terminal_clear();
 
-    am_util_stdio_printf("SparkFun Edge Board Test\n");
-    am_util_stdio_printf("Compiled on %s, %s\n\n", __DATE__, __TIME__);
+    am_util_stdio_printf("SparkFun Edge Board Test\n\n");
+    //am_util_stdio_printf("Compiled on %s, %s\n\n", __DATE__, __TIME__);
     //am_bsp_uart_string_print("Hello, UART!\r\n");
 
     am_util_stdio_printf("Initializing accelerometer... \r\n");
@@ -46,6 +53,10 @@ int main(void)
     am_util_stdio_printf("Accelerometer init returned %8x\r\n\n", accInitRes);
 
     testADC();
+    am_hal_gpio_output_clear(AM_BSP_GPIO_1);
+    am_hal_gpio_output_clear(AM_BSP_GPIO_LED_RED);
+    am_hal_gpio_output_clear(AM_BSP_GPIO_LED_BLUE);
+    am_hal_gpio_output_clear(AM_BSP_GPIO_LED_YELLOW);
     
     am_util_stdio_printf("Interval between readings: ~%d", TIME_DELAY_MILISECONDS);
     am_util_stdio_printf("ms\r\n\n");
@@ -70,6 +81,10 @@ int main(void)
         lis2dh12_xl_data_ready_get(&dev_ctx, &reg.byte);
         if (reg.byte)
         {
+            am_hal_gpio_output_set(AM_BSP_GPIO_1);
+            am_hal_gpio_output_set(AM_BSP_GPIO_LED_BLUE);
+            am_util_delay_ms(TIME_DELAY_COMM_SET_UP);
+
             /* Read accelerometer data */
             memset(data_raw_acceleration.u8bit, 0x00, 3*sizeof(int16_t));
             lis2dh12_acceleration_raw_get(&dev_ctx, data_raw_acceleration.u8bit);
@@ -83,7 +98,11 @@ int main(void)
             am_util_stdio_printf("%04.2f ,%04.2f ,%04.2f \r\n",
                     acceleration_mg[0], acceleration_mg[1], acceleration_mg[2] );
 
-            am_util_delay_ms(TIME_DELAY_MILISECONDS);
+            am_util_delay_ms(TIME_DELAY_COMM_SET_UP);
+            am_hal_gpio_output_clear(AM_BSP_GPIO_1);
+            am_hal_gpio_output_clear(AM_BSP_GPIO_LED_BLUE);
+
+            am_util_delay_ms(TIME_DELAY_MILISECONDS - (2*TIME_DELAY_COMM_SET_UP));
 
 
         }
@@ -127,11 +146,16 @@ static int boardSetup(void)
     // Set up button 14 as input (has pullup resistor on hardware)
     am_hal_gpio_pinconfig(AM_BSP_GPIO_14, g_AM_HAL_GPIO_INPUT);
 
+    // Set up Pin 1 as output
+    am_hal_gpio_pinconfig(AM_BSP_GPIO_1, g_AM_HAL_GPIO_OUTPUT_12);
+
     // Turn on the LEDs
     am_hal_gpio_output_set(AM_BSP_GPIO_LED_RED);
     am_hal_gpio_output_set(AM_BSP_GPIO_LED_BLUE);
     am_hal_gpio_output_set(AM_BSP_GPIO_LED_GREEN);
     am_hal_gpio_output_set(AM_BSP_GPIO_LED_YELLOW);
+
+    am_hal_gpio_output_set(AM_BSP_GPIO_1);
 
     return 0;
 }
@@ -143,6 +167,8 @@ static void boardTeardown(void)
     am_hal_gpio_output_clear(AM_BSP_GPIO_LED_BLUE);
     am_hal_gpio_output_clear(AM_BSP_GPIO_LED_GREEN);
     am_hal_gpio_output_clear(AM_BSP_GPIO_LED_YELLOW);
+
+    am_hal_gpio_output_clear(AM_BSP_GPIO_1);
 }
 
 static int testADC(void)
@@ -153,3 +179,14 @@ static int testADC(void)
 
     return 0;
 }
+
+//*****************************************************************************
+//
+//  GPIO pin 1.
+//
+//*****************************************************************************
+const am_hal_gpio_pincfg_t g_AM_BSP_GPIO_1 =
+{
+    .uFuncSel            = AM_HAL_PIN_1_GPIO,
+    .eDriveStrength      = AM_HAL_GPIO_PIN_DRIVESTRENGTH_2MA
+};
