@@ -4,7 +4,7 @@
 //!
 //! @brief Edge Test is an example to demonstrate the built-in hardware on the Edge board
 //!
-//! SWO is configured in 2M baud, 8-n-1 mode.
+//! 1200 baud, 8-n-1 mode.
 //
 //*****************************************************************************
 
@@ -15,7 +15,7 @@
 #include "tf_adc.h"
 #include "tf_accelerometer.h"
 
-#define TIME_DELAY_MILISECONDS 500
+#define TIME_DELAY_MILISECONDS 5000
 #define TIME_DELAY_COMM_SET_UP 25
 
 static int  boardSetup(void);
@@ -45,8 +45,6 @@ int main(void)
     am_util_stdio_terminal_clear();
 
     am_util_stdio_printf("SparkFun Edge Board Test\n\n");
-    //am_util_stdio_printf("Compiled on %s, %s\n\n", __DATE__, __TIME__);
-    //am_bsp_uart_string_print("Hello, UART!\r\n");
 
     am_util_stdio_printf("Initializing accelerometer... \r\n");
     int accInitRes = initAccelerometer();
