@@ -813,7 +813,7 @@ am_util_faultisr_collect_data(uint32_t u32IsrSP)
     c7a6:	4604      	mov	r4, r0
     sFaultData.u32FaultAddr = (sFaultData.u8BFSR & 0x02) ? getStackedReg(6, u32IsrSP) : 0xffffffff;
     c7a8:	d437      	bmi.n	c81a <am_util_faultisr_collect_data+0xb2>
-    c7aa:	f04f 33ff 	mov.w	r3, #4294967295
+    c7aa:	f04f 33ff 	mov.w	r3, #4294967295	; 0xffffffff
 
     //
     // Get the stacked registers.
@@ -1560,14 +1560,14 @@ am_util_stdio_vsprintf(char *pcBuf, const char *pcFmt, va_list pArgs)
                         if ( ui8PadChar == '0' )
     cc56:	f1b8 0f30 	cmp.w	r8, #48	; 0x30
                         --iWidth;
-    cc5a:	f109 39ff 	add.w	r9, r9, #4294967295
+    cc5a:	f109 39ff 	add.w	r9, r9, #4294967295	; 0xffffffff
                         if ( ui8PadChar == '0' )
     cc5e:	f000 8314 	beq.w	d28a <am_util_stdio_vsprintf+0x862>
     if ( i32NumChars <= 0 )
     cc62:	f1b9 0f00 	cmp.w	r9, #0
     cc66:	f340 8305 	ble.w	d274 <am_util_stdio_vsprintf+0x84c>
     while ( i32NumChars-- )
-    cc6a:	f109 33ff 	add.w	r3, r9, #4294967295
+    cc6a:	f109 33ff 	add.w	r3, r9, #4294967295	; 0xffffffff
     int32_t i32Cnt = 0;
     cc6e:	2100      	movs	r1, #0
     cc70:	462e      	mov	r6, r5
@@ -2164,7 +2164,7 @@ am_util_stdio_vsprintf(char *pcBuf, const char *pcFmt, va_list pArgs)
         return ui32RetVal;
     d10e:	461f      	mov	r7, r3
     while ( i32NumChars-- )
-    d110:	f102 39ff 	add.w	r9, r2, #4294967295
+    d110:	f102 39ff 	add.w	r9, r2, #4294967295	; 0xffffffff
     int32_t i32Cnt = 0;
     d114:	2100      	movs	r1, #0
     while ( i32NumChars-- )
@@ -2181,7 +2181,7 @@ am_util_stdio_vsprintf(char *pcBuf, const char *pcFmt, va_list pArgs)
         i32Cnt++;
     d126:	3101      	adds	r1, #1
     while ( i32NumChars-- )
-    d128:	f106 39ff 	add.w	r9, r6, #4294967295
+    d128:	f106 39ff 	add.w	r9, r6, #4294967295	; 0xffffffff
     d12c:	2e00      	cmp	r6, #0
     d12e:	d1f3      	bne.n	d118 <am_util_stdio_vsprintf+0x6f0>
     d130:	4608      	mov	r0, r1
@@ -2252,7 +2252,7 @@ am_util_stdio_vsprintf(char *pcBuf, const char *pcFmt, va_list pArgs)
         i32Cnt++;
     d1a0:	3101      	adds	r1, #1
     while ( i32NumChars-- )
-    d1a2:	f109 36ff 	add.w	r6, r9, #4294967295
+    d1a2:	f109 36ff 	add.w	r6, r9, #4294967295	; 0xffffffff
     d1a6:	f1b9 0f00 	cmp.w	r9, #0
     d1aa:	d1bc      	bne.n	d126 <am_util_stdio_vsprintf+0x6fe>
     d1ac:	e7c0      	b.n	d130 <am_util_stdio_vsprintf+0x708>
@@ -3076,7 +3076,7 @@ static int32_t platform_read(void *handle, uint8_t reg, uint8_t *bufp,
     if(bufp == NULL){
     d662:	b30c      	cbz	r4, d6a8 <platform_write+0x94>
     while(len--){
-    d664:	f10c 31ff 	add.w	r1, ip, #4294967295
+    d664:	f10c 31ff 	add.w	r1, ip, #4294967295	; 0xffffffff
     d668:	b289      	uxth	r1, r1
     d66a:	f1bc 0f00 	cmp.w	ip, #0
     d66e:	d009      	beq.n	d684 <platform_write+0x70>
@@ -3262,170 +3262,90 @@ static int32_t platform_read(void *handle, uint8_t reg, uint8_t *bufp,
     d7a0:	00010530 	.word	0x00010530
 
 0000d7a4 <lis2dh12_from_fs2_hr_to_mg>:
-  * @{
-  *
-  */
-
-float lis2dh12_from_fs2_hr_to_mg(int16_t lsb)
-{
     d7a4:	ee00 0a10 	vmov	s0, r0
-  return ( (float)lsb / 16.0f ) * 1.0f;
-}
     d7a8:	eeba 0ace 	vcvt.f32.s32	s0, s0, #4
     d7ac:	4770      	bx	lr
     d7ae:	bf00      	nop
 
 0000d7b0 <lis2dh12_temperature_meas_set>:
-  * @retval          interface status (MANDATORY: return 0 -> no Error)
-  *
-  */
-int32_t lis2dh12_temperature_meas_set(lis2dh12_ctx_t *ctx,
-                                      lis2dh12_temp_en_t val)
-{
     d7b0:	b570      	push	{r4, r5, r6, lr}
     d7b2:	b082      	sub	sp, #8
     d7b4:	4604      	mov	r4, r0
     d7b6:	460d      	mov	r5, r1
-  ret = ctx->read_reg(ctx->handle, reg, data, len);
     d7b8:	e9d0 6001 	ldrd	r6, r0, [r0, #4]
     d7bc:	aa01      	add	r2, sp, #4
     d7be:	2301      	movs	r3, #1
     d7c0:	211f      	movs	r1, #31
     d7c2:	47b0      	blx	r6
-  lis2dh12_temp_cfg_reg_t temp_cfg_reg;
-  int32_t ret;
-
-  ret = lis2dh12_read_reg(ctx, LIS2DH12_TEMP_CFG_REG, (uint8_t*)&temp_cfg_reg, 1);
-
-  if (ret == 0) {
     d7c4:	b958      	cbnz	r0, d7de <lis2dh12_temperature_meas_set+0x2e>
-    temp_cfg_reg.temp_en = (uint8_t) val;
     d7c6:	f89d 3004 	ldrb.w	r3, [sp, #4]
-  ret = ctx->write_reg(ctx->handle, reg, data, len);
     d7ca:	6826      	ldr	r6, [r4, #0]
     d7cc:	68a0      	ldr	r0, [r4, #8]
-    temp_cfg_reg.temp_en = (uint8_t) val;
     d7ce:	f365 1387 	bfi	r3, r5, #6, #2
     d7d2:	f88d 3004 	strb.w	r3, [sp, #4]
-  ret = ctx->write_reg(ctx->handle, reg, data, len);
     d7d6:	aa01      	add	r2, sp, #4
     d7d8:	2301      	movs	r3, #1
     d7da:	211f      	movs	r1, #31
     d7dc:	47b0      	blx	r6
-    ret = lis2dh12_write_reg(ctx, LIS2DH12_TEMP_CFG_REG, (uint8_t*)&temp_cfg_reg, 1);
-  }
-  return ret;
-}
     d7de:	b002      	add	sp, #8
     d7e0:	bd70      	pop	{r4, r5, r6, pc}
     d7e2:	bf00      	nop
 
 0000d7e4 <lis2dh12_operating_mode_set>:
-  *                  and HR in reg CTRL_REG4
-  * @retval          interface status (MANDATORY: return 0 -> no Error)
-  *
-  */
-int32_t lis2dh12_operating_mode_set(lis2dh12_ctx_t *ctx, lis2dh12_op_md_t val)
-{
     d7e4:	b570      	push	{r4, r5, r6, lr}
     d7e6:	b082      	sub	sp, #8
     d7e8:	4604      	mov	r4, r0
     d7ea:	460d      	mov	r5, r1
-  ret = ctx->read_reg(ctx->handle, reg, data, len);
     d7ec:	e9d0 6001 	ldrd	r6, r0, [r0, #4]
     d7f0:	466a      	mov	r2, sp
     d7f2:	2301      	movs	r3, #1
     d7f4:	2120      	movs	r1, #32
     d7f6:	47b0      	blx	r6
-  lis2dh12_ctrl_reg4_t ctrl_reg4;
-  int32_t ret;
-
-  ret = lis2dh12_read_reg(ctx, LIS2DH12_CTRL_REG1,
-                          (uint8_t*)&ctrl_reg1, 1);
-  if (ret == 0) {
     d7f8:	bb00      	cbnz	r0, d83c <lis2dh12_operating_mode_set+0x58>
-  ret = ctx->read_reg(ctx->handle, reg, data, len);
     d7fa:	e9d4 6001 	ldrd	r6, r0, [r4, #4]
     d7fe:	aa01      	add	r2, sp, #4
     d800:	2301      	movs	r3, #1
     d802:	2123      	movs	r1, #35	; 0x23
     d804:	47b0      	blx	r6
-    ret = lis2dh12_read_reg(ctx, LIS2DH12_CTRL_REG4,
-                            (uint8_t*)&ctrl_reg4, 1);
-  } 
-  if (ret == 0) {
     d806:	b9c8      	cbnz	r0, d83c <lis2dh12_operating_mode_set+0x58>
-    if ( val == LIS2DH12_HR_12bit ) {
     d808:	b9d5      	cbnz	r5, d840 <lis2dh12_operating_mode_set+0x5c>
-      ctrl_reg1.lpen = 0;
     d80a:	f89d 2000 	ldrb.w	r2, [sp]
-      ctrl_reg4.hr   = 1;
     d80e:	f89d 3004 	ldrb.w	r3, [sp, #4]
-      ctrl_reg1.lpen = 0;
     d812:	f365 02c3 	bfi	r2, r5, #3, #1
-      ctrl_reg4.hr   = 1;
     d816:	f043 0308 	orr.w	r3, r3, #8
-      ctrl_reg1.lpen = 0;
     d81a:	f88d 2000 	strb.w	r2, [sp]
-      ctrl_reg4.hr   = 1;
     d81e:	f88d 3004 	strb.w	r3, [sp, #4]
-  ret = ctx->write_reg(ctx->handle, reg, data, len);
     d822:	6825      	ldr	r5, [r4, #0]
     d824:	68a0      	ldr	r0, [r4, #8]
     d826:	466a      	mov	r2, sp
     d828:	2301      	movs	r3, #1
     d82a:	2120      	movs	r1, #32
     d82c:	47a8      	blx	r5
-      ctrl_reg1.lpen = 1;
-      ctrl_reg4.hr   = 0;
-    }
-    ret = lis2dh12_write_reg(ctx, LIS2DH12_CTRL_REG1, (uint8_t*)&ctrl_reg1, 1);
-  } 
-  if (ret == 0) {
     d82e:	b928      	cbnz	r0, d83c <lis2dh12_operating_mode_set+0x58>
-  ret = ctx->write_reg(ctx->handle, reg, data, len);
     d830:	6825      	ldr	r5, [r4, #0]
     d832:	68a0      	ldr	r0, [r4, #8]
     d834:	aa01      	add	r2, sp, #4
     d836:	2301      	movs	r3, #1
     d838:	2123      	movs	r1, #35	; 0x23
     d83a:	47a8      	blx	r5
-    ret = lis2dh12_write_reg(ctx, LIS2DH12_CTRL_REG4, (uint8_t*)&ctrl_reg4, 1);
-  }
-  return ret;
-}
     d83c:	b002      	add	sp, #8
     d83e:	bd70      	pop	{r4, r5, r6, pc}
-    if (val == LIS2DH12_NM_10bit) {
     d840:	2d01      	cmp	r5, #1
     d842:	d10c      	bne.n	d85e <lis2dh12_operating_mode_set+0x7a>
-      ctrl_reg1.lpen = 0;
     d844:	f89d 2000 	ldrb.w	r2, [sp]
-      ctrl_reg4.hr   = 0;
     d848:	f89d 3004 	ldrb.w	r3, [sp, #4]
-      ctrl_reg1.lpen = 0;
     d84c:	f360 02c3 	bfi	r2, r0, #3, #1
-      ctrl_reg4.hr   = 0;
     d850:	f360 03c3 	bfi	r3, r0, #3, #1
-      ctrl_reg1.lpen = 0;
     d854:	f88d 2000 	strb.w	r2, [sp]
-      ctrl_reg4.hr   = 0;
     d858:	f88d 3004 	strb.w	r3, [sp, #4]
-    if (val == LIS2DH12_LP_8bit) {
     d85c:	e7e1      	b.n	d822 <lis2dh12_operating_mode_set+0x3e>
     d85e:	2d02      	cmp	r5, #2
     d860:	d1df      	bne.n	d822 <lis2dh12_operating_mode_set+0x3e>
-      ctrl_reg1.lpen = 1;
     d862:	f89d 3000 	ldrb.w	r3, [sp]
-      ctrl_reg4.hr   = 0;
     d866:	f89d 2004 	ldrb.w	r2, [sp, #4]
-      ctrl_reg1.lpen = 1;
     d86a:	f043 0308 	orr.w	r3, r3, #8
-      ctrl_reg4.hr   = 0;
     d86e:	f360 02c3 	bfi	r2, r0, #3, #1
-      ctrl_reg1.lpen = 1;
     d872:	f88d 3000 	strb.w	r3, [sp]
-      ctrl_reg4.hr   = 0;
     d876:	f88d 2004 	strb.w	r2, [sp, #4]
     d87a:	e7d2      	b.n	d822 <lis2dh12_operating_mode_set+0x3e>
 
@@ -3658,7 +3578,7 @@ int32_t lis2dh12_device_id_get(lis2dh12_ctx_t *ctx, uint8_t *buff)
     d980:	2200      	movs	r2, #0
     d982:	6818      	ldr	r0, [r3, #0]
     d984:	9403      	str	r4, [sp, #12]
-    d986:	f04f 33ff 	mov.w	r3, #4294967295
+    d986:	f04f 33ff 	mov.w	r3, #4294967295	; 0xffffffff
     d98a:	a901      	add	r1, sp, #4
     d98c:	9304      	str	r3, [sp, #16]
     d98e:	9201      	str	r2, [sp, #4]
@@ -5196,7 +5116,7 @@ int32_t lis2dh12_device_id_get(lis2dh12_ctx_t *ctx, uint8_t *buff)
     e8b0:	b1ca      	cbz	r2, e8e6 <am_hal_gpio_state_read+0x36>
     e8b2:	2831      	cmp	r0, #49	; 0x31
     e8b4:	d904      	bls.n	e8c0 <am_hal_gpio_state_read+0x10>
-    e8b6:	f04f 33ff 	mov.w	r3, #4294967295
+    e8b6:	f04f 33ff 	mov.w	r3, #4294967295	; 0xffffffff
     e8ba:	6013      	str	r3, [r2, #0]
     e8bc:	2005      	movs	r0, #5
     e8be:	4770      	bx	lr
@@ -5368,7 +5288,7 @@ int32_t lis2dh12_device_id_get(lis2dh12_ctx_t *ctx, uint8_t *buff)
     ea62:	f894 3214 	ldrb.w	r3, [r4, #532]	; 0x214
     ea66:	f043 0310 	orr.w	r3, r3, #16
     ea6a:	f884 3214 	strb.w	r3, [r4, #532]	; 0x214
-    ea6e:	f04f 33ff 	mov.w	r3, #4294967295
+    ea6e:	f04f 33ff 	mov.w	r3, #4294967295	; 0xffffffff
     ea72:	f8c4 3208 	str.w	r3, [r4, #520]	; 0x208
     ea76:	f8c4 5200 	str.w	r5, [r4, #512]	; 0x200
     ea7a:	bd70      	pop	{r4, r5, r6, pc}
@@ -5822,7 +5742,7 @@ int32_t lis2dh12_device_id_get(lis2dh12_ctx_t *ctx, uint8_t *buff)
     ef44:	3f07      	subs	r7, #7
     ef46:	f04f 0c01 	mov.w	ip, #1
     ef4a:	fa0c fc07 	lsl.w	ip, ip, r7
-    ef4e:	f10c 3cff 	add.w	ip, ip, #4294967295
+    ef4e:	f10c 3cff 	add.w	ip, ip, #4294967295	; 0xffffffff
     ef52:	ea0c 0c05 	and.w	ip, ip, r5
     ef56:	40fd      	lsrs	r5, r7
     ef58:	f1bc 0f00 	cmp.w	ip, #0
@@ -5938,7 +5858,7 @@ int32_t lis2dh12_device_id_get(lis2dh12_ctx_t *ctx, uint8_t *buff)
     f09a:	2006      	movs	r0, #6
     f09c:	e7eb      	b.n	f076 <am_hal_iom_blocking_transfer+0x26>
     f09e:	ea4f 02c9 	mov.w	r2, r9, lsl #3
-    f0a2:	f04f 33ff 	mov.w	r3, #4294967295
+    f0a2:	f04f 33ff 	mov.w	r3, #4294967295	; 0xffffffff
     f0a6:	f8d1 b008 	ldr.w	fp, [r1, #8]
     f0aa:	4093      	lsls	r3, r2
     f0ac:	ea13 0f0b 	tst.w	r3, fp
@@ -5968,7 +5888,7 @@ int32_t lis2dh12_device_id_get(lis2dh12_ctx_t *ctx, uint8_t *buff)
     f0ee:	f8d0 0858 	ldr.w	r0, [r0, #2136]	; 0x858
     f0f2:	6866      	ldr	r6, [r4, #4]
     f0f4:	9300      	str	r3, [sp, #0]
-    f0f6:	f04f 32ff 	mov.w	r2, #4294967295
+    f0f6:	f04f 32ff 	mov.w	r2, #4294967295	; 0xffffffff
     f0fa:	2300      	movs	r3, #0
     f0fc:	f104 0124 	add.w	r1, r4, #36	; 0x24
     f100:	4598      	cmp	r8, r3
@@ -5995,7 +5915,7 @@ int32_t lis2dh12_device_id_get(lis2dh12_ctx_t *ctx, uint8_t *buff)
     f136:	9305      	str	r3, [sp, #20]
     f138:	f8c6 0200 	str.w	r0, [r6, #512]	; 0x200
     f13c:	f8b6 3280 	ldrh.w	r3, [r6, #640]	; 0x280
-    f140:	f04f 32ff 	mov.w	r2, #4294967295
+    f140:	f04f 32ff 	mov.w	r2, #4294967295	; 0xffffffff
     f144:	f360 0300 	bfi	r3, r0, #0, #1
     f148:	f8a6 3280 	strh.w	r3, [r6, #640]	; 0x280
     f14c:	f8c6 2208 	str.w	r2, [r6, #520]	; 0x208
@@ -6067,7 +5987,7 @@ int32_t lis2dh12_device_id_get(lis2dh12_ctx_t *ctx, uint8_t *buff)
     f216:	f8d6 1204 	ldr.w	r1, [r6, #516]	; 0x204
     f21a:	4620      	mov	r0, r4
     f21c:	f7ff fbca 	bl	e9b4 <internal_iom_reset_on_error>
-    f220:	f04f 33ff 	mov.w	r3, #4294967295
+    f220:	f04f 33ff 	mov.w	r3, #4294967295	; 0xffffffff
     f224:	f8c6 3208 	str.w	r3, [r6, #520]	; 0x208
     f228:	9b05      	ldr	r3, [sp, #20]
     f22a:	f8c6 3200 	str.w	r3, [r6, #512]	; 0x200
@@ -6232,7 +6152,7 @@ int32_t lis2dh12_device_id_get(lis2dh12_ctx_t *ctx, uint8_t *buff)
     f3e8:	f8c3 1fb0 	str.w	r1, [r3, #4016]	; 0xfb0
     f3ec:	4a1f      	ldr	r2, [pc, #124]	; (f46c <am_hal_itm_disable+0xa4>)
     f3ee:	200f      	movs	r0, #15
-    f3f0:	f04f 31ff 	mov.w	r1, #4294967295
+    f3f0:	f04f 31ff 	mov.w	r1, #4294967295	; 0xffffffff
     f3f4:	f8c3 0e40 	str.w	r0, [r3, #3648]	; 0xe40
     f3f8:	f8c3 1e00 	str.w	r1, [r3, #3584]	; 0xe00
     f3fc:	f8c3 2e80 	str.w	r2, [r3, #3712]	; 0xe80
@@ -6693,7 +6613,7 @@ int32_t lis2dh12_device_id_get(lis2dh12_ctx_t *ctx, uint8_t *buff)
     f86e:	f507 2780 	add.w	r7, r7, #262144	; 0x40000
     f872:	371c      	adds	r7, #28
     f874:	033f      	lsls	r7, r7, #12
-    f876:	f04f 33ff 	mov.w	r3, #4294967295
+    f876:	f04f 33ff 	mov.w	r3, #4294967295	; 0xffffffff
     f87a:	647b      	str	r3, [r7, #68]	; 0x44
     f87c:	4640      	mov	r0, r8
     f87e:	f7ff feb9 	bl	f5f4 <am_hal_pwrctrl_periph_disable>
@@ -7073,7 +6993,7 @@ int32_t lis2dh12_device_id_get(lis2dh12_ctx_t *ctx, uint8_t *buff)
     fc2c:	f3c2 1240 	ubfx	r2, r2, #5, #1
     fc30:	2a00      	cmp	r2, #0
     fc32:	f040 818d 	bne.w	ff50 <am_hal_uart_transfer+0x3e8>
-    fc36:	f10a 33ff 	add.w	r3, sl, #4294967295
+    fc36:	f10a 33ff 	add.w	r3, sl, #4294967295	; 0xffffffff
     fc3a:	e003      	b.n	fc44 <am_hal_uart_transfer+0xdc>
     fc3c:	6988      	ldr	r0, [r1, #24]
     fc3e:	0680      	lsls	r0, r0, #26
@@ -7114,7 +7034,7 @@ int32_t lis2dh12_device_id_get(lis2dh12_ctx_t *ctx, uint8_t *buff)
     fc98:	6811      	ldr	r1, [r2, #0]
     fc9a:	f411 6470 	ands.w	r4, r1, #3840	; 0xf00
     fc9e:	bf08      	it	eq
-    fca0:	f103 33ff 	addeq.w	r3, r3, #4294967295
+    fca0:	f103 33ff 	addeq.w	r3, r3, #4294967295	; 0xffffffff
     fca4:	d008      	beq.n	fcb8 <am_hal_uart_transfer+0x150>
     fca6:	e190      	b.n	ffca <am_hal_uart_transfer+0x462>
     fca8:	6991      	ldr	r1, [r2, #24]
@@ -7212,7 +7132,7 @@ int32_t lis2dh12_device_id_get(lis2dh12_ctx_t *ctx, uint8_t *buff)
     fd8a:	d0c1      	beq.n	fd10 <am_hal_uart_transfer+0x1a8>
     fd8c:	2010      	movs	r0, #16
     fd8e:	f7fe fbff 	bl	e590 <am_hal_flash_delay>
-    fd92:	f1b9 3fff 	cmp.w	r9, #4294967295
+    fd92:	f1b9 3fff 	cmp.w	r9, #4294967295	; 0xffffffff
     fd96:	d001      	beq.n	fd9c <am_hal_uart_transfer+0x234>
     fd98:	f10b 0b01 	add.w	fp, fp, #1
     fd9c:	45d9      	cmp	r9, fp
@@ -7250,7 +7170,7 @@ int32_t lis2dh12_device_id_get(lis2dh12_ctx_t *ctx, uint8_t *buff)
     fdea:	680a      	ldr	r2, [r1, #0]
     fdec:	f412 6470 	ands.w	r4, r2, #3840	; 0xf00
     fdf0:	f040 80aa 	bne.w	ff48 <am_hal_uart_transfer+0x3e0>
-    fdf4:	f108 38ff 	add.w	r8, r8, #4294967295
+    fdf4:	f108 38ff 	add.w	r8, r8, #4294967295	; 0xffffffff
     fdf8:	e006      	b.n	fe08 <am_hal_uart_transfer+0x2a0>
     fdfa:	698a      	ldr	r2, [r1, #24]
     fdfc:	06d2      	lsls	r2, r2, #27
@@ -7290,7 +7210,7 @@ int32_t lis2dh12_device_id_get(lis2dh12_ctx_t *ctx, uint8_t *buff)
     fe50:	2010      	movs	r0, #16
     fe52:	9301      	str	r3, [sp, #4]
     fe54:	f7fe fb9c 	bl	e590 <am_hal_flash_delay>
-    fe58:	f1b9 3fff 	cmp.w	r9, #4294967295
+    fe58:	f1b9 3fff 	cmp.w	r9, #4294967295	; 0xffffffff
     fe5c:	9b01      	ldr	r3, [sp, #4]
     fe5e:	d001      	beq.n	fe64 <am_hal_uart_transfer+0x2fc>
     fe60:	f10a 0a01 	add.w	sl, sl, #1
