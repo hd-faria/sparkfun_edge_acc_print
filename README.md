@@ -1,21 +1,59 @@
 # Edge_teste_CPqD
 
-To install the toolchain follow [sparkfun guide](https://learn.sparkfun.com/tutorials/using-sparkfun-edge-board-with-ambiq-apollo3-sdk/toolchain-setup)
+[[_TOC_]]
 
 This code is based on [/example/example1_edge_test](https://github.com/sparkfun/SparkFun_Edge_BSP)
 
-## Troubleshooting
+## Installation process
 
-if using **linux** or mac, you may find some [drive update issue](https://github.com/sparkfun/SparkFun_Edge_BSP/issues/3) that can be fixed folloing [this tutorial](https://learn.sparkfun.com/tutorials/how-to-install-ch340-drivers/all#linux) that guides you on how to install [this patch](https://github.com/juliagoda/CH341SER)
+To install the toolchain follow [sparkfun guide](https://learn.sparkfun.com/tutorials/using-sparkfun-edge-board-with-ambiq-apollo3-sdk/toolchain-setup) according to your operating system.
+
+ - Tested compiler: gcc-arm-none-eabi-9-2019-q4-major
+ - Tested SDK: AmbiqSuite-Rel2.2.0
+ - [Sparkfun Board Support Package(BSP)](https://github.com/sparkfun/SparkFun_Edge_BSP): commit 6ea7ef137132bb0cb4b27abe837c913c7643f11e
+
+On Windows 10, it is important to note that python3 is installed as python.exe, and since the toolchains expects for python3, an easy fix is to rename the executable and the shortcut that points to it.
+
+On linux, on the Hausekeeping part of [sparkfun guide](https://learn.sparkfun.com/tutorials/using-sparkfun-edge-board-with-ambiq-apollo3-sdk/toolchain-setup) it may also be necessary to give execution permission to ```$AMB_ROOT/tools/apollo3_scripts/create_cust_wireupdate_blob.py``` 
+
+[Sparkfun guide](https://learn.sparkfun.com/tutorials/using-sparkfun-edge-board-with-ambiq-apollo3-sdk/example-applications) says:
+```
+ - On Mac, you can simply list ls /dev/tty.*
+ - On Unix-like operating systems you should also be able to show all available serial ports by entering ls /dev/cu* into the Bash shell.
+```
+where it should say
+```
+ - On Mac, you can simply list ls /dev/cu*
+ - On Unix-like operating systems you should also be able to show all available serial ports by entering ls /dev/tty* into the Bash shell.
+```
+in [Pop!OS](https://system76.com/pop), a variant of [Ubuntu](https://ubuntu.com/), it is /dev/ttyUSB*
+
+## Known linux issues
+
+```bash
+Makefile:193: recipe for target 'wired_update' failed
+make: *** [wired_update] Error 126
+```
+
+try ```sudo chmod +x ../../../../../tools/apollo3_scripts/create_cust_wireupdate_blob.py```
+
+---
+if using **linux** or mac, you may find some errors such as
+
+```bash
+Makefile:197: recipe for target 'bootload' failed
+make: *** [bootload] Error 1
+```
+
+[drive update issue](https://github.com/sparkfun/SparkFun_Edge_BSP/issues/3) that can be fixed folloing [this tutorial](https://learn.sparkfun.com/tutorials/how-to-install-ch340-drivers/all#linux) that guides you on how to install [this patch](https://github.com/juliagoda/CH341SER)
 
 ## Programming
 
-
-## Changing baud rate
+### Changing baud rate
 
 Default baud is 115200, to use a different baud it is necessary to change am_bsp.c in line
 
-```
+```c
 static const am_hal_uart_config_t g_sBspUartConfig =
 {
     //
@@ -43,8 +81,9 @@ static const am_hal_uart_config_t g_sBspUartConfig =
 };
 ```
 
-to 
-```
+to
+
+```c
 static const am_hal_uart_config_t g_sBspUartConfig =
 {
     //
@@ -73,15 +112,18 @@ static const am_hal_uart_config_t g_sBspUartConfig =
 };
 ```
 
-and 
-```
+and
+
+```c
    //
     // Run the RTC off the LFRC.
     //
     am_hal_rtc_osc_select(AM_HAL_RTC_OSC_LFRC);
 ```
+
 to
-```
+
+```c
    //
     // Run the RTC off the LFRC.
     //
