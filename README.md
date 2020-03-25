@@ -50,7 +50,7 @@ make: *** [wired_update] Error 126
 
 ---
 
-UART-to-USB converter based on chip CH340 heva a known [issue](https://github.com/sparkfun/SparkFun_Edge_BSP/issues/3) regarding driver compatibility with linux kernels beyond 3.13.x. In this case, during the programming process, if the following error appears in the terminal, it may be necessary to update the driver. [This issue](https://github.com/sparkfun/SparkFun_Edge_BSP/issues/3) can be fixed following [this tutorial](https://learn.sparkfun.com/tutorials/how-to-install-ch340-drivers/all#linux) on how to install [this patch](https://github.com/juliagoda/CH341SER)
+UART-to-USB converter based on chip CH340 have a known [issue](https://github.com/sparkfun/SparkFun_Edge_BSP/issues/3) regarding driver compatibility with linux kernels beyond 3.13.x. In this case, during the programming process, if the following error appears in the terminal, it may be necessary to update the driver. [This issue](https://github.com/sparkfun/SparkFun_Edge_BSP/issues/3) can be fixed following [this tutorial](https://learn.sparkfun.com/tutorials/how-to-install-ch340-drivers/all#linux) on how to install [this patch](https://github.com/juliagoda/CH341SER)
 
 ```bash
 Makefile:197: recipe for target 'bootload' failed
