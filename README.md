@@ -57,17 +57,17 @@ Makefile:197: recipe for target 'bootload' failed
 make: *** [bootload] Error 1
 ```
 
+# Hardware connection
+
+## CH34x
+
+![SparkFun CH34x USB to UART serial converter](./Edge-CH34x.png "SparkFun CH34x USB to UART serial converter")
+
+## FTDI232
+
+![SparkFun FTDI232 USB to UART serial converter](./Edge-FTDI232.png "SparkFun FTDI232 USB to UART serial converter")
+
 # Programming
-
-## Hardware connection
-
-### CH34x
-
-[CH34x](./Edge-CH34x.png)
-
-### FTDI232
-
-[FTDI232](./Edge-FTDI232.png)
 
 ## Changing baud rate
 
