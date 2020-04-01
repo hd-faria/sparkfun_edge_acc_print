@@ -37,7 +37,8 @@
 # This is part of revision v2.0.0 of the AmbiqSuite Development Package.
 #
 #******************************************************************************
-TARGET := example1_edge_test
+#TARGET := example1_edge_test
+TARGET := sparkfun_edge_acc_print
 COMPILERNAME := gcc
 PROJECT := ${TARGET}_gcc
 CONFIG := bin

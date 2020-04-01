@@ -49,6 +49,14 @@ make: *** [bootload] Error 1
 
 ## Programming
 
+### CH34x
+
+[CH34x](./Edge-CH34x.png)
+
+### FTDI232
+
+[FTDI232](./Edge-FTDI232.png)
+
 ### Changing baud rate
 
 Default baud is 115200, to use a different baud it is necessary to change am_bsp.c in line
