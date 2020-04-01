@@ -7,19 +7,20 @@ This repository is meant to store the source code of the firmware flashed into S
 This code is based on [/example/example1_edge_test](https://github.com/sparkfun/SparkFun_Edge_BSP) adapted to read the accelerations( AccX, Accy, AccZ) measured by the IC LIS2DH12, from ST Microelectronics, and send these values over a UART communication port to the modem developed by CPqD
 
 In order to compile this firmware, it is necessary to download and install the following software/packages:
- - ARM compiler
- - AmbiqSuite(SDK)
- - SparkFun Board Support Package(BSP)
- - Some text editor( The tests at RIO used VS Code)
- - Some serial terminal might be useful for testing, like [CoolTerm](https://freeware.the-meiers.org/), Arduino Serial Monitor functionlity, etc. 
+
+- ARM compiler
+- AmbiqSuite(SDK)
+- SparkFun Board Support Package(BSP)
+- Some text editor( The tests at RIO used VS Code)
+- Some serial terminal might be useful for testing, like [CoolTerm](https://freeware.the-meiers.org/), Arduino Serial Monitor functionlity, etc.
 
 # Installation process
 
 To install the toolchain, follow [SparkFun guide](https://learn.sparkfun.com/tutorials/using-sparkfun-edge-board-with-ambiq-apollo3-sdk/toolchain-setup) according to your operating system.
 
- - Tested compiler: gcc-arm-none-eabi-9-2019-q4-major
- - Tested SDK: AmbiqSuite-Rel2.2.0
- - [Sparkfun Board Support Package(BSP)](https://github.com/sparkfun/SparkFun_Edge_BSP): commit 6ea7ef137132bb0cb4b27abe837c913c7643f11e
+- Tested compiler: gcc-arm-none-eabi-9-2019-q4-major
+- Tested SDK: AmbiqSuite-Rel2.2.0
+- [Sparkfun Board Support Package(BSP)](https://github.com/sparkfun/SparkFun_Edge_BSP): commit 6ea7ef137132bb0cb4b27abe837c913c7643f11e
 
 On Windows 10, it is important to note that python3 is installed as python.exe, and since the toolchain expects for python3, an easy fix is to rename the executable and the shortcut that points to it.
 
@@ -28,15 +29,19 @@ On Windows 10, it is important to note that python3 is installed as python.exe, 
 On Linux, the Housekeeping part of [sparkfun guide](https://learn.sparkfun.com/tutorials/using-sparkfun-edge-board-with-ambiq-apollo3-sdk/toolchain-setup), it may also be necessary to give execution permission to ```$AMB_ROOT/tools/apollo3_scripts/create_cust_wireupdate_blob.py``` 
 
 Where [Sparkfun guide](https://learn.sparkfun.com/tutorials/using-sparkfun-edge-board-with-ambiq-apollo3-sdk/example-applications) says:
-```
+
+```shell
  - On Mac, you can simply list ls /dev/tty.*
  - On Unix-like operating systems you should also be able to show all available serial ports by entering ls /dev/cu* into the Bash shell.
 ```
+
 It should be said:
-```
+
+```shell
  - On Mac, you can simply list ls /dev/cu*
  - On Unix-like operating systems you should also be able to show all available serial ports by entering ls /dev/tty* into the Bash shell.
 ```
+
 in [Pop!OS](https://system76.com/pop), a variant of [Ubuntu](https://ubuntu.com/), it is /dev/ttyUSB*
 
 ---
