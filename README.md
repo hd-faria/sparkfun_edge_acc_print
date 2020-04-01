@@ -1,6 +1,6 @@
-# Edge_teste_CPqD
-
 [[_TOC_]]
+
+# Edge_teste_CPqD
 
 This repository is meant to store the source code of the firmware flashed into Sparkfun Edge Development Board - Apollo3 Blue( DEV-15170) sent to CPqD to be used in the first communication tests.
 
