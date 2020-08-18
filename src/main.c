@@ -14,6 +14,7 @@
 //#include "am_util_delay.h"
 #include "tf_adc.h"
 #include "tf_accelerometer.h"
+#include "communication.h"
 
 #define TIME_DELAY_MILISECONDS 5000
 #define TIME_DELAY_COMM_SET_UP 25
@@ -131,10 +132,49 @@ static int boardSetup(void)
     // Configure the board for low power operation.
     am_bsp_low_power_init();
 
+/*
     // Initialize the printf interface for ITM/SWO output.
     am_bsp_uart_printf_enable(); // Enable UART - will set debug output to UART
     //am_bsp_itm_printf_enable(); // Redirect debug output to SWO
+*/
+    ////////////////////
+    // Testing new uart
+    ////////////////////
+    
+    //
+    // Initialize the printf interface for UART output.
+    //
+    CHECK_ERRORS(am_hal_uart_initialize(0, &phUART));
+    CHECK_ERRORS(am_hal_uart_power_control(phUART, AM_HAL_SYSCTRL_WAKE, false));
+    CHECK_ERRORS(am_hal_uart_configure(phUART, &g_sUartConfig));
 
+    //
+    // Enable the UART pins.
+    //
+    am_hal_gpio_pinconfig(AM_BSP_GPIO_COM_UART_TX, g_AM_BSP_GPIO_COM_UART_TX);
+    am_hal_gpio_pinconfig(AM_BSP_GPIO_COM_UART_RX, g_AM_BSP_GPIO_COM_UART_RX);
+
+    //
+    // Enable interrupts.
+    //
+    NVIC_EnableIRQ((IRQn_Type)(UART0_IRQn + AM_BSP_UART_PRINT_INST));
+    am_hal_interrupt_master_enable();
+
+    //
+    // Set the main print interface to use the UART print function we defined.
+    //
+    am_util_stdio_printf_init(uart_print);
+
+    //
+    // Print the banner.
+    //
+    am_util_stdio_terminal_clear();
+    am_util_stdio_printf("Hello World!\n\n");
+    
+    ///////////////////////
+    //end testing new uart
+    //////////////////////
+    
     // Setup LED's as outputs
     am_hal_gpio_pinconfig(AM_BSP_GPIO_LED_RED, g_AM_HAL_GPIO_OUTPUT_12);
     am_hal_gpio_pinconfig(AM_BSP_GPIO_LED_BLUE, g_AM_HAL_GPIO_OUTPUT_12);

@@ -101,10 +101,12 @@ INCLUDES+= -I../src
 INCLUDES+= -I../../../../../devices
 INCLUDES+= -I../src/tf_adc
 INCLUDES+= -I../src/tf_accelerometer
+INCLUDES+= -I../src/communication
 
 VPATH = ../src
 VPATH+= ../src/tf_adc
 VPATH+= ../src/tf_accelerometer
+#VPATH+= ../src/communication
 VPATH+=:../../../../../devices
 VPATH+=:../../../../../utils
 
